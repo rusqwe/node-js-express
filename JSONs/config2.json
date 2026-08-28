@@ -1,0 +1,24 @@
+{
+   "COMMON": {
+      "LOCAL": {
+         "PERFIX": "param_",
+         "SERVER": "{0}:8383/sqldata/web4/",
+         "ADAPTER": "{0}:8484/",
+         "LOGIN": "{0}:8383/api/auth/login/",
+         "CONNECTION_PATH": "Data Source={0};Initial Catalog=KRON_TM2;Persist Security Info=True;User ID={1};Password={2}",
+         "TM_MIDDLE": "{0}:8282/"
+      },
+      "EXTERNAL": {
+         "PERFIX": "param_",
+         "SERVER": "{0}:8444/sqldata/web4/",
+         "ADAPTER": "{0}:8445/",
+         "LOGIN": "{0}:8444/api/auth/login/",
+         "CONNECTION_PATH": "Data Source={0};Initial Catalog=KRON_TM2;Persist Security Info=True;User ID={1};Password={2}",
+         "TM_MIDDLE": "{0}:8443/"
+      }
+   },
+   "LOCALHOST": {
+      "LOCAL": {},
+      "EXTERNAL": {}
+   }
+}
