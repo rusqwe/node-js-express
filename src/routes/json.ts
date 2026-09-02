@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import errorHandler from '../middleware/errorHandler.js';
+//import errorHandler from '../middleware/errorHandler.js';
 import { loadFilePath, listFiles, clearCacheFiles } from '../middleware/fileReader.js';
 
 const router = express.Router();
@@ -35,6 +35,6 @@ router.post('/cache/clear', (req: Request, res: Response) => {
     res.json({ message: 'Cache cleared' });
 });
 
-router.use(errorHandler);
+//router.use(errorHandler);
 
 export default router;

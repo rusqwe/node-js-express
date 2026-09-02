@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import errorHandler from '../middleware/errorHandler.js';
+//import errorHandler from '../middleware/errorHandler.js';
 import { listFiles, getFilePath } from '../middleware/fileReader.js';
 
 const router = express.Router();
@@ -25,6 +25,6 @@ router.get('/:fileName', async (req: Request, res: Response, next: NextFunction)
     }
 });
 
-router.use(errorHandler);
+//router.use(errorHandler);
 
 export default router;

@@ -1,13 +1,15 @@
 import 'dotenv/config';
-import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import express from 'express';
 import compression from 'compression';
 import { eventBus } from './utils/eventBus.js';
 import taskRouter from './routes/task.js';
 import download from './routes/download.js';
 import jsonRouter from './routes/json.js';
+import errorHandler from './middleware/errorHandler.js';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // ============================================
 // Пример 1: Подписка на событие (on)
@@ -34,13 +36,14 @@ eventBus.once('server:error', (data: unknown) => {
 // Либо использовать функцию очистки, которую возвращает eventBus.on():
 // cleanupValidation();
 
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); // Для обработки данных из HTML-форм(вложености) (application/x-www-form-urlencoded)
 app.use(compression()); // Автоматически сжимает все ответы
 app.use('/api/tasks', taskRouter);
 app.use('/api/download', download);
 app.use('/api/json', jsonRouter);
-
+app.use(errorHandler);
 // Экспорт app для тестирования
 export { app };
 

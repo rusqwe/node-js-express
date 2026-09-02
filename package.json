@@ -14,13 +14,17 @@
   "license": "ISC",
   "dependencies": {
     "compression": "^1.8.1",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "mssql": "^12.7.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/compression": "^1.8.1",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/mssql": "^12.3.0",
     "@types/node": "^24.2.1",
     "@types/supertest": "^7.2.1",
     "nodemon": "^3.1.14",
