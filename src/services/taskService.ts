@@ -7,7 +7,7 @@ export interface Task {
     task_name?: string;
     module_id?: number;
     module_name: string;
-    developer_id: string;
+    developer_id: number;
     developer_login: string;
     developer_shortname: string;
     role_snames: string;

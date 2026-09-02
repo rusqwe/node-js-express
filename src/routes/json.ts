@@ -7,7 +7,6 @@ const baseDirJSON = process.env.JSONS_DIR || 'JSONs';
 
 // GET /json/list — получить список файлов
 router.get('/list', async (req: Request, res: Response, next: NextFunction) => {
-    console.log('/list');
     try {
         const files = await listFiles(baseDirJSON);
         res.json(files);

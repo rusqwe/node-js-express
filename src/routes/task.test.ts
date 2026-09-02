@@ -39,7 +39,7 @@ const sampleTask: Task = {
     task_name: 'Test Task',
     module_id: 1,
     module_name: 'Module',
-    developer_id: 'dev1',
+    developer_id: 1,
     developer_login: 'admin',
     developer_shortname: 'Admin',
     role_snames: 'Admin',
