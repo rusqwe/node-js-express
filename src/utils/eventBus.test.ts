@@ -7,14 +7,14 @@ describe('eventBus', () => {
     eventBus.removeAllListeners();
   });
 
-  it('should emit and listen to events', async () => {
+  it('должен отправлять и слушать события', async () => {
     const listener = vi.fn();
     eventBus.on('test:event', listener);
     eventBus.emit('test:event', { data: 'test' });
     expect(listener).toHaveBeenCalledWith({ data: 'test' });
   });
 
-  it('should call once listener only once', async () => {
+  it('должен вызывать once listener только один раз', async () => {
     const listener = vi.fn();
     eventBus.once('once:event', listener);
     eventBus.emit('once:event', 'first');
@@ -23,7 +23,7 @@ describe('eventBus', () => {
     expect(listener).toHaveBeenCalledWith('first');
   });
 
-  it('should remove listener with off method', async () => {
+  it('должен удалять listener методом off', async () => {
     const listener = vi.fn();
     eventBus.on('cleanup:event', listener);
     eventBus.emit('cleanup:event', 'before');
@@ -33,7 +33,7 @@ describe('eventBus', () => {
     expect(listener).toHaveBeenCalledWith('before');
   });
 
-  it('should remove listener with off method', async () => {
+  it('должен удалять listener через off', async () => {
     const listener = vi.fn();
     eventBus.on('off:event', listener);
     eventBus.emit('off:event', 'before');
@@ -43,14 +43,14 @@ describe('eventBus', () => {
     expect(listener).toHaveBeenCalledWith('before');
   });
 
-  it('should pass multiple arguments to listeners', async () => {
+  it('передаёт несколько аргументов listener', async () => {
     const listener = vi.fn();
     eventBus.on('multi:event', listener);
     eventBus.emit('multi:event', 'arg1', 'arg2', { arg3: true });
     expect(listener).toHaveBeenCalledWith('arg1', 'arg2', { arg3: true });
   });
 
-  it('should handle multiple listeners for the same event', async () => {
+  it('должен обрабатывать несколько listener для одного события', async () => {
     const listener1 = vi.fn();
     const listener2 = vi.fn();
     eventBus.on('multi:listener', listener1);
@@ -60,7 +60,7 @@ describe('eventBus', () => {
     expect(listener2).toHaveBeenCalledWith('data');
   });
 
-  it('should handle multiple events correctly', async () => {
+  it('должен корректно обрабатывать несколько событий', async () => {
     const listener1 = vi.fn();
     const listener2 = vi.fn();
     eventBus.on('event1', listener1);

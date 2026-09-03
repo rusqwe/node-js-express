@@ -3,14 +3,14 @@ import request from 'supertest';
 import { app } from '../index';
 
 describe('GET /api/json/list', () => {
-  it('should return list of JSON files', async () => {
+  it('должен возвращать список JSON файлов', async () => {
     const res = await request(app).get('/api/json/list');
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBeGreaterThan(0);
   });
 
-  it('should return files with correct properties', async () => {
+  it('должен возвращать файлы с правильными свойствами', async () => {
     const res = await request(app).get('/api/json/list');
     expect(res.status).toBe(200);
     // Dirent должен иметь свойство name
@@ -21,25 +21,25 @@ describe('GET /api/json/list', () => {
 });
 
 describe('GET /api/json/:fileName', () => {
-  it('should return a JSON file by name', async () => {
+  it('возвращает JSON файл по имени', async () => {
     const res = await request(app).get('/api/json/config.json');
     expect(res.status).toBe(200);
     expect(res.body).toBeDefined();
   });
 
-  it('should return valid JSON data from users.json', async () => {
+  it('должен возвращать корректные JSON данные из users.json', async () => {
     const res = await request(app).get('/api/json/users.json');
     expect(res.status).toBe(200);
     expect(res.body).toBeDefined();
   });
 
-  it('should return 404 for non-existent file', async () => {
+  it('возвращает 404 для несуществующего файла', async () => {
     const res = await request(app).get('/api/json/nonexistent.json');
     expect(res.status).toBe(404);
     expect(res.body).toHaveProperty('error');
   });
 
-  it('should prevent path traversal with encoded characters', async () => {
+  it('должен предотвращать обход пути с закодированными символами', async () => {
     const res = await request(app).get('/api/json/%2e%2e%2fpackage.json');
     // Express может нормализовать путь, но fileReader должен защитить от traversal
     expect([400, 404]).toContain(res.status);
@@ -47,7 +47,7 @@ describe('GET /api/json/:fileName', () => {
 });
 
 describe('POST /api/json/cache/clear', () => {
-  it('should clear the file cache', async () => {
+  it('должен очищать кэш файлов', async () => {
     const res = await request(app).post('/api/json/cache/clear');
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty('message', 'Cache cleared');

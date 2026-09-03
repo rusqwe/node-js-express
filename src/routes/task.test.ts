@@ -43,8 +43,8 @@ const sampleTask: Task = {
     developer_login: 'admin',
     developer_shortname: 'Admin',
     role_snames: 'Admin',
-    role_count: '1',
-    row_is_ready: 'Y',
+    role_count: 1,
+    row_is_ready: true,
 };
 
 beforeAll(() => {
@@ -52,7 +52,7 @@ beforeAll(() => {
 });
 
 describe('GET /api/tasks', () => {
-    it('should return all tasks', async () => {
+    it('должен возвращать все задачи', async () => {
         mockGetTasks.mockResolvedValue([sampleTask]);
         const res = await request(app).get('/api/tasks');
         expect(res.status).toBe(200);
@@ -61,14 +61,14 @@ describe('GET /api/tasks', () => {
         expect(res.body[0]).toHaveProperty('task_name', 'Test Task');
     });
 
-    it('should return tasks filtered by taskId', async () => {
+    it('должен возвращать задачи, отфильтрованные по taskId', async () => {
         mockGetTasks.mockResolvedValue([sampleTask]);
         const res = await request(app).get('/api/tasks?task_id=1');
         expect(res.status).toBe(200);
         expect(mockGetTasks).toHaveBeenCalledWith('1');
     });
 
-    it('should return empty array when no tasks match', async () => {
+    it('должен возвращать пустой массив, если задачи не найдены', async () => {
         mockGetTasks.mockResolvedValue([]);
         const res = await request(app).get('/api/tasks?task_id=999');
         expect(res.status).toBe(200);
@@ -78,7 +78,7 @@ describe('GET /api/tasks', () => {
 });
 
 describe('GET /api/tasks/:id', () => {
-    it('should return a task by id', async () => {
+    it('должен возвращать задачу по id', async () => {
         mockGetTaskById.mockResolvedValue(sampleTask);
         const res = await request(app).get('/api/tasks/1');
         expect(res.status).toBe(200);
@@ -86,7 +86,7 @@ describe('GET /api/tasks/:id', () => {
         expect(res.body).toHaveProperty('task_name');
     });
 
-    it('should return 404 for non-existent task', async () => {
+    it('должен возвращать 404 для несуществующей задачи', async () => {
         mockGetTaskById.mockResolvedValue(null);
         const res = await request(app).get('/api/tasks/999');
         expect(res.status).toBe(404);
@@ -95,7 +95,7 @@ describe('GET /api/tasks/:id', () => {
 });
 
 describe('POST /api/tasks', () => {
-    it('should create a new task with valid data', async () => {
+    it('должен создавать новую задачу с валидными данными', async () => {
         const newTask: Task = {
             ...sampleTask,
             task_id: 999,
@@ -104,13 +104,13 @@ describe('POST /api/tasks', () => {
         mockCreateTask.mockResolvedValue(newTask);
         const res = await request(app)
             .post('/api/tasks')
-            .send({ task_name: 'Новая задача' });
+            .send(newTask);
         expect(res.status).toBe(201);
         expect(res.body).toHaveProperty('task_id');
         expect(res.body.task_name).toBe('Новая задача');
     });
 
-    it('should return 400 for missing task_name', async () => {
+    it('должен возвращать 400 при отсутствии task_name', async () => {
         const res = await request(app).post('/api/tasks').send({
             task_id: 1,
         });
@@ -120,7 +120,7 @@ describe('POST /api/tasks', () => {
 });
 
 describe('PUT /api/tasks/:id', () => {
-    it('should update an existing task', async () => {
+    it('должен обновлять существующую задачу', async () => {
         const updatedTask: Task = {
             ...sampleTask,
             task_name: 'Обновлённая задача',
@@ -134,9 +134,10 @@ describe('PUT /api/tasks/:id', () => {
         expect(res.body.task_name).toBe('Обновлённая задача');
     });
 
-    it('should return 404 for non-existent task', async () => {
+    it('возвращает 404 для несуществующей задачи', async () => {
         mockUpdateTask.mockResolvedValue(null);
         const res = await request(app).put('/api/tasks/999').send({
+            ...sampleTask,
             task_name: 'Не существует',
         });
         expect(res.status).toBe(404);
@@ -145,13 +146,13 @@ describe('PUT /api/tasks/:id', () => {
 });
 
 describe('DELETE /api/tasks/:id', () => {
-    it('should delete a task', async () => {
+    it('удаляет задачу', async () => {
         mockDeleteTask.mockResolvedValue(true);
         const res = await request(app).delete('/api/tasks/2');
         expect(res.status).toBe(204);
     });
 
-    it('should return 404 for non-existent task', async () => {
+    it('должен возвращать 404 для несуществующей задачи', async () => {
         mockDeleteTask.mockResolvedValue(false);
         const res = await request(app).delete('/api/tasks/999');
         expect(res.status).toBe(404);

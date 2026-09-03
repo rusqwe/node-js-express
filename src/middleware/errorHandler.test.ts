@@ -41,8 +41,8 @@ function createTestApp() {
   return app;
 }
 
-describe('errorHandler middleware', () => {
-  it('should handle Zod validation errors', async () => {
+describe('middleware errorHandler', () => {
+  it('должен обрабатывать ошибки валидации Zod', async () => {
     const app = createTestApp();
     const res = await request(app).post('/zod-error').send({});
     expect(res.status).toBe(400);
@@ -52,7 +52,7 @@ describe('errorHandler middleware', () => {
     expect(res.body).toHaveProperty('timestamp');
   });
 
-  it('should handle AppError with custom status', async () => {
+  it('должен обрабатывать AppError с пользовательским статусом', async () => {
     const app = createTestApp();
     const res = await request(app).post('/app-error').send({});
     expect(res.status).toBe(403);
@@ -60,7 +60,7 @@ describe('errorHandler middleware', () => {
     expect(res.body).toHaveProperty('timestamp');
   });
 
-  it('should handle generic errors with 500 status', async () => {
+  it('обрабатывает общие ошибки со статусом 500', async () => {
     const app = createTestApp();
     const res = await request(app).get('/generic-error');
     expect(res.status).toBe(500);
@@ -68,7 +68,7 @@ describe('errorHandler middleware', () => {
     expect(res.body).toHaveProperty('timestamp');
   });
 
-  it('should include timestamp in all error responses', async () => {
+  it('включает метку времени во все ответы об ошибках', async () => {
     const app = createTestApp();
 
     const zodRes = await request(app).post('/zod-error').send({});
@@ -82,23 +82,23 @@ describe('errorHandler middleware', () => {
   });
 });
 
-describe('AppError class', () => {
-  it('should have correct name', () => {
+describe('Класс AppError', () => {
+  it('должен иметь правильное имя', () => {
     const err = new AppError('Test error');
     expect(err.name).toBe('AppError');
   });
 
-  it('should default to status 500', () => {
+  it('должен по умолчанию иметь статус 500', () => {
     const err = new AppError('Test error');
     expect(err.status).toBe(500);
   });
 
-  it('should accept custom status', () => {
+  it('должен принимать пользовательский статус', () => {
     const err = new AppError('Not found', 404);
     expect(err.status).toBe(404);
   });
 
-  it('should extend Error', () => {
+  it('должен расширять Error', () => {
     const err = new AppError('Test');
     expect(err).toBeInstanceOf(Error);
   });

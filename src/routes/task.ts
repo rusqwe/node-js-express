@@ -5,7 +5,7 @@ import type { Task } from '../services/taskService.js';
 
 const router = express.Router();
 
-// Схема валидации задачи
+// Схема валидации таска
 const taskSchema = z.object({
     task_id: z.number().min(1),
     task_struct_code: z.number().min(1),
@@ -19,6 +19,18 @@ const taskSchema = z.object({
     role_count: z.number().min(1),
     row_is_ready: z.boolean()
 });
+
+const taskSchemaUpdate = z.object({
+    task_id: z.number().min(1),
+    module_id: z.number().min(1),
+    developer_id: z.number().min(1),
+    task_sysname: z.string(),
+    task_name: z.string(),
+    task_code: z.number().min(1),
+    task_desc: z.string(),
+    row_is_ready: z.boolean()
+});
+
 
 // GET /api/tasks — получить все задачи (с поиском по taskId)
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
@@ -48,7 +60,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 // POST /api/tasks — создать задачу
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const validatedData = taskSchema.parse(req.body) as Task;
+        const validatedData = taskSchemaUpdate.parse(req.body) as Task;
         const task = await taskService.createTask(validatedData);
         res.status(201).json(task);
     } catch (err) {
@@ -60,7 +72,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const taskId = req.params.id as string;
-        const validatedData = taskSchema.parse(req.body) as Task;
+        const validatedData = taskSchemaUpdate.parse(req.body) as Task;
         const task = await taskService.updateTask(taskId, validatedData);
         if (!task) {
             return res.status(404).json({ error: 'Task not found' });

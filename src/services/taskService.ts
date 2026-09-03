@@ -4,15 +4,15 @@ import { request as getRequest } from '../db/pool.js';
 export interface Task {
     task_id: number;
     task_struct_code: number;
-    task_name?: string;
-    module_id?: number;
+    task_name: string;
+    module_id: number;
     module_name: string;
     developer_id: number;
     developer_login: string;
     developer_shortname: string;
     role_snames: string;
-    role_count: string;
-    row_is_ready: string;
+    role_count: number;
+    row_is_ready: boolean;
 }
 
 // Helper для создания запроса с подключённым пулом
@@ -20,12 +20,11 @@ async function createRequest(): Promise<Request> {
     return getRequest();
 }
 
-
 function addInputs(req: Request, data: Task): void {
     for (const [key, value] of Object.entries(data)) {
         if (value === undefined) continue;
         // Динамически добавляет поля объекта как SQL параметры
-        const type = typeof value === 'number' ? sql.Int : sql.NVarChar;
+        const type = typeof value === 'number' ? sql.Int : typeof value === 'boolean' ? sql.Bit : sql.NVarChar;
         req.input(key, type, value);
     }
 }

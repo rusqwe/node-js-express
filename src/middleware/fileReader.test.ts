@@ -7,29 +7,29 @@ describe('loadFilePath', () => {
     clearCacheFiles();
   });
 
-  it('should load a JSON file', async () => {
+  it('загружает JSON файл', async () => {
     const data = await loadFilePath('config.json');
     expect(data).toBeDefined();
     expect(typeof data).toBe('string');
   });
 
-  it('should return parsed JSON content', async () => {
+  it('возвращает распарсенное содержимое JSON', async () => {
     const data = await loadFilePath('config.json');
     const parsed = JSON.parse(data);
     expect(parsed).toBeDefined();
   });
 
-  it('should throw AppError for non-existent file', async () => {
+  it('выбрасывает AppError для несуществующего файла', async () => {
     await expect(loadFilePath('nonexistent.json')).rejects.toThrow(AppError);
     await expect(loadFilePath('nonexistent.json')).rejects.toThrow('File not found');
   });
 
-  it('should prevent path traversal', async () => {
+  it('предотвращает обход пути', async () => {
     await expect(loadFilePath('../../package.json')).rejects.toThrow(AppError);
     await expect(loadFilePath('../../package.json')).rejects.toThrow('Invalid file path');
   });
 
-  it('should cache file content', async () => {
+  it('кэширует содержимое файла', async () => {
     // Первая загрузка (без кэша)
     const data1 = await loadFilePath('config.json');
     // Вторая загрузка (из кэша)
@@ -37,7 +37,7 @@ describe('loadFilePath', () => {
     expect(data1).toBe(data2);
   });
 
-  it('clearCacheFiles should clear the cache', async () => {
+  it('очищает кэш', async () => {
     await loadFilePath('config.json');
     clearCacheFiles();
     // После очистки кэша следующая загрузка должна работать корректно
@@ -47,7 +47,7 @@ describe('loadFilePath', () => {
 });
 
 describe('getFilePath', () => {
-  it('should return fullPath and safeName', async () => {
+  it('возвращает fullPath и safeName', async () => {
     // Файл может не существовать, но функция должна вернуть путь
     try {
       const result = await getFilePath('test.txt');
@@ -59,25 +59,25 @@ describe('getFilePath', () => {
     }
   });
 
-  it('should prevent path traversal', async () => {
+  it('предотвращает обход пути', async () => {
     await expect(getFilePath('../../package.json')).rejects.toThrow(AppError);
     await expect(getFilePath('../../package.json')).rejects.toThrow('Invalid file path');
   });
 
-  it('should throw AppError for non-existent file', async () => {
+  it('выбрасывает AppError для несуществующего файла', async () => {
     await expect(getFilePath('nonexistent.txt')).rejects.toThrow(AppError);
     await expect(getFilePath('nonexistent.txt')).rejects.toThrow('File not found');
   });
 });
 
 describe('listFiles', () => {
-  it('should return array of Dirent', async () => {
+  it('возвращает массив Dirent', async () => {
     const files = await listFiles('JSONs');
     expect(Array.isArray(files)).toBe(true);
     expect(files.length).toBeGreaterThan(0);
   });
 
-  it('should include known JSON files', async () => {
+  it('включает известные JSON файлы', async () => {
     const files = await listFiles('JSONs');
     const names = files.map((f: any) => f.name);
     expect(names).toContain('config.json');
